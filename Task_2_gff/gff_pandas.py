@@ -8,9 +8,8 @@ df = pd.read_csv('GCF_017821535.1_ASM1782153v1_genomic.gff_Mod.csv', delimiter =
 # Filter the data with the keyword
 def filter(f):
     global filtered_data
-    filter_type = df.loc[df['Type'].str.contains(f, flags = re.I, regex = True)] # Filter by 'Type'
-    filtered_data = filter_type[['Start', 'End', 'Strand', 'Phase']] # Keep the specified columns
-    filtered_data['Phase'].replace('.', 0, inplace = True) # Replace the Phase '.' to 0
+    filtered_data = df.loc[df['Type'].str.contains(f, flags = re.I, regex = True)] # Filter by 'Type'
+    #filtered_data['Phase'].replace('.', 0, inplace = True) # Replace the Phase '.' to 0
     filtered_data.reset_index(drop = True, inplace = True) # Reset the index, and drop the old one
 
 # DNA Complement strand converter
@@ -105,7 +104,9 @@ def Seq_aa(s):
 
 def print_aa(): # print out the amino acids
     if Strand == '+':
-        if Phase == '0' or '.':
+        if Phase == '.':
+            print('.')
+        elif Phase == '0':
             aa_Comp = Seq_aa(Seq_select_Comp)
             print(aa_Comp)
         elif Phase == '1':
@@ -117,7 +118,9 @@ def print_aa(): # print out the amino acids
         else:
             print('Phase error')
     if Strand == '-':
-        if Phase == '0' or '.':
+        if Phase == '.':
+            print('.')
+        elif Phase == '0':
             aa_Rev_Comp = Seq_aa(Seq_select_Rev_Comp)
             print(aa_Rev_Comp)
         elif Phase == '1':
@@ -136,7 +139,7 @@ if __name__ == '__main__':
 
     filter_by = parsed_args.filter_by # the filter keyword
     filter(filter_by)
-    #print(filtered_data)
+    print(filtered_data)
 
     # Open fasta file and prepare the sequence
     file_name = 'GCF_017821535.1_ASM1782153v1_genomic.fna' # the fasta file name
@@ -159,6 +162,7 @@ if __name__ == '__main__':
         Seq_end = filtered_data.at[i, 'End'] # the sequence end point
         Strand = filtered_data.at[i, 'Strand']
         Phase = filtered_data.at[i, 'Phase']
+        print('>', end='') # Print '>' and don't move to next line
         print(Seq_start, Seq_end, Strand, Phase)
         Seq_selector() # select the sequence
         print_aa() # print out the amino acids

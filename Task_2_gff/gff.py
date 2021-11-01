@@ -21,7 +21,7 @@ def Split_Attribute(a): # split the Attributes into a dictionary
 def gff_read(f):
     with open(f, 'r', newline = '') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter = '\t')
-        for row in list(csv_reader)[0:30]:
+        for row in list(csv_reader)[0:50]:
             if len(row) == 0: # Skip the empty rows
                 continue
             if '#' in row[0]: # Skip the rows begin with '#'
