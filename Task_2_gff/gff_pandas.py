@@ -2,6 +2,7 @@ import pandas as pd
 import argparse
 import re
 import csv
+import ast
 
 df = pd.read_csv('GCF_017821535.1_ASM1782153v1_genomic.gff_Mod.csv', delimiter = '\t')
 
@@ -133,13 +134,13 @@ def print_aa(): # print out the amino acids
             print('Phase error')
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description = 'Read the modified gff files and filter what we need')
+    parser = argparse.ArgumentParser(description = 'Read the modified gff files and filter by type, then print the Gene sequence from fasta file')
     parser.add_argument('filter_by', type = str, help = 'filter Type')
     parsed_args = parser.parse_args()
 
     filter_by = parsed_args.filter_by # the filter keyword
     filter(filter_by)
-    print(filtered_data)
+    #print(filtered_data)
 
     # Open fasta file and prepare the sequence
     file_name = 'GCF_017821535.1_ASM1782153v1_genomic.fna' # the fasta file name
@@ -163,11 +164,9 @@ if __name__ == '__main__':
         Seq_end = filtered_data.at[i, 'End'] # the sequence end point
         Strand = filtered_data.at[i, 'Strand']
         Phase = filtered_data.at[i, 'Phase']
+        Attributes = ast.literal_eval(filtered_data.at[i, 'Attributes']) # convert Attributes string to dictionary
         print('>', end = '') # Print '>' and don't move to next line
-        #Attributes = {}
-        #Attributes = filtered_data.at[i, 'Attributes']
-        #print(type(Attributes))
-
+        print(Attributes.get('ID', 0), end = '')
         print(Seq_start, Seq_end, Strand, Phase)
         Seq_selector() # select the sequence
         print_aa() # print out the amino acids
