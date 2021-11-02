@@ -27,8 +27,8 @@ def gff_read(f):
             if '#' in row[0]: # Skip the rows begin with '#'
                 continue
             else: # write the rows into the modified file
-                Att_sp = Split_Attribute(row) # after-split Attribute (list)
-                row[8] = Att_D # replace Attribute with the split Attribute list
+                Att_sp = Split_Attribute(row) # after-split Attribute (Dictionary)
+                row[8] = Att_D # replace Attribute with the split Attribute Dictionary
                 Mod_write(row)
 
 if __name__ == '__main__':

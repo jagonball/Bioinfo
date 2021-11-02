@@ -146,7 +146,8 @@ if __name__ == '__main__':
     with open(file_name, 'r', newline = '') as csv_file:
         csv_reader = csv.reader(csv_file)
         header = next(csv_reader) # Set first row as header and move to the next row
-        print('The Fasta:' + str(header))
+        print(header[0], end = ',')
+        print(header[1])
     
         GeneSeq = '' # Put the entire sequence in GeneSeq
         for row in csv_reader:
@@ -162,7 +163,11 @@ if __name__ == '__main__':
         Seq_end = filtered_data.at[i, 'End'] # the sequence end point
         Strand = filtered_data.at[i, 'Strand']
         Phase = filtered_data.at[i, 'Phase']
-        print('>', end='') # Print '>' and don't move to next line
+        print('>', end = '') # Print '>' and don't move to next line
+        #Attributes = {}
+        #Attributes = filtered_data.at[i, 'Attributes']
+        #print(type(Attributes))
+
         print(Seq_start, Seq_end, Strand, Phase)
         Seq_selector() # select the sequence
         print_aa() # print out the amino acids
