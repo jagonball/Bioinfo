@@ -1,8 +1,21 @@
-import random
+from random import randint
 
-secret_num = random.randint(1,100) # 隨機挑選1~100間的一個數字當答案
-print("[猜數字遊戲]六次機會，請輸入1~100之間的任一數字:")
-guess_num = int(input()) # 將玩家輸入的數字轉成數值資料，存在guess_num
+def get_input(): # 接受玩家猜測並檢查是否為有效值
+    global guess_num
+    try:
+        guess_num = int(input()) # 將玩家的猜測轉成數值資料，存在guess_num
+        if 0 < guess_num < 101:
+            pass
+        else:
+            print("無效答案，請輸入1~100之間的任一整數:")
+            get_input()
+    except ValueError: # 若無法轉換，玩家輸入的非數值
+        print("無效答案，請輸入1~100之間的任一整數:")
+        get_input()
+
+print("[猜數字遊戲]六次機會，請輸入1~100之間的任一整數:")
+get_input()
+secret_num = randint(1,100) # 隨機挑選1~100間的一個數字當答案
 guess_count = 1 # 猜測次數
 chances = 5 # 猜測機會-1
 
@@ -11,11 +24,10 @@ while guess_num != secret_num and guess_count <= chances:
     guess_count += 1
     if guess_num > secret_num: # 若 玩家猜測 大於 答案 時
         print("猜得太大了！請再猜一次:")
-        guess_num = int(input())
+        get_input()
     elif guess_num < secret_num: # 或當 玩家猜測 小於 答案 時
         print("猜得太小了！請再猜一次:")
-        guess_num = int(input())
-
+        get_input()
 ### 沒進入上面迴圈時 (也就是 (當 玩家猜測 等於 答案)或(猜測次數 大於 猜測機會) 時)
 ##這裡要判斷是哪個原因造成沒有進入上面迴圈
 if guess_num == secret_num: # 猜中答案了
