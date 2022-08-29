@@ -1,7 +1,33 @@
-# Convert codon to amino acid, from a list to a new list
-def Convert_codon_aa_l(s):
-    def Codon_aa_l(c):
-        if   c[i] == 'GTT' or c[i] == 'GTC' or c[i] == 'GTA' or c[i] == 'GTG' or c[i] == 'GUU' or (
+'''
+A converter for codon or sequence into amino acids
+'''
+def main():
+    # test all codon to aa from list
+    codon = ['UUU', 'UUC', 'UUA', 'UUG', 'CUU', 'CUC', 'CUA', 'CUG', 'AUU', 'AUC', 'AUA', 
+        'AUG', 'GUU', 'GUC', 'GUA', 'GUG', 'UCU', 'UCC', 'UCA', 'UCG', 'AGU', 'AGC', 'CCU', 
+        'CCC', 'CCA', 'CCG', 'ACU', 'ACC', 'ACA', 'ACG', 'GCU', 'GCC', 'GCA', 'GCG', 'UAU', 
+        'UAC', 'UAA', 'UAG', 'UGA', 'CAU', 'CAC', 'CAA', 'CAG', 'AAU', 'AAC', 'AAA', 'AAG', 
+        'GAU', 'GAC', 'GAA', 'GAG', 'UGU', 'UGC', 'UGG', 'CGU', 'CGC', 'CGA', 'CGG', 'AGA', 
+        'AGG', 'GGU', 'GGC', 'GGA', 'GGG']
+    codon_aa = convert_codon_aa_l(codon)
+    print(codon_aa)
+    # correct output count
+    print('F2-L6-I3-M1-V4-S6-P4-T4-A4-Y2-(*3)-H2-Q2-N2-K2-D2-E2-C2-W1-R6-G4')
+
+    # test all codon to aa from string
+    Seq_shift = 0
+    codon = 'TTTTTCTTATTGCTTCTCCTACTGATTATCATAATGGTTGTCGTAGTGTCTTCCTCATCGAGTA' + (
+            'GCCCTCCCCCACCGACTACCACAACGGCTGCCGCAGCGTATTACTAATAGTGACATCACCAACA' +
+            'GAATAACAAAAAGGATGACGAAGAGTGTTGCTGGCGTCGCCGACGGAGAAGGGGTGGCGGAGGG')
+    codon_aa = seq_aa(codon)
+    print(codon_aa)
+    # correct output comparison
+    print('FFLLLLLLIIIMVVVVSSSSSSPPPPTTTTAAAAYY(*)HHQQNNKKDDEECCWRRRRRRGGGG')
+
+### Convert codon to amino acid, from a list to a new list
+def convert_codon_aa_l(s):
+    def codon_aa_list(c):
+        if c[i] == 'GTT' or c[i] == 'GTC' or c[i] == 'GTA' or c[i] == 'GTG' or c[i] == 'GUU' or (
                           c[i] == 'GUC' or c[i] == 'GUA' or c[i] == 'GUG'):
             c[i] = 'V' # Val
         elif c[i] == 'GCT' or c[i] == 'GCC' or c[i] == 'GCA' or c[i] == 'GCG' or c[i] == 'GCU':
@@ -52,24 +78,12 @@ def Convert_codon_aa_l(s):
                            c[i] == 'UAG' or c[i] == 'TGA' or c[i] == 'UGA'):
             c[i] = '*' # STOP
     for i in range(len(s)):
-        Codon_aa_l(s)
+        codon_aa_list(s)
     return s
-
-# test all codon to aa
-codon = ['UUU', 'UUC', 'UUA', 'UUG', 'CUU', 'CUC', 'CUA', 'CUG', 'AUU', 'AUC', 'AUA', 
-    'AUG', 'GUU', 'GUC', 'GUA', 'GUG', 'UCU', 'UCC', 'UCA', 'UCG', 'AGU', 'AGC', 'CCU', 
-    'CCC', 'CCA', 'CCG', 'ACU', 'ACC', 'ACA', 'ACG', 'GCU', 'GCC', 'GCA', 'GCG', 'UAU', 
-    'UAC', 'UAA', 'UAG', 'UGA', 'CAU', 'CAC', 'CAA', 'CAG', 'AAU', 'AAC', 'AAA', 'AAG', 
-    'GAU', 'GAC', 'GAA', 'GAG', 'UGU', 'UGC', 'UGG', 'CGU', 'CGC', 'CGA', 'CGG', 'AGA', 
-    'AGG', 'GGU', 'GGC', 'GGA', 'GGG']
-codon_aa = Convert_codon_aa_l(codon)
-print(codon_aa)
-# correct output count
-print('F2-L6-I3-M1-V4-S6-P4-T4-A4-Y2-(*3)-H2-Q2-N2-K2-D2-E2-C2-W1-R6-G4')
 
 
 # Convert codon to amino acid from string
-def Codon_aa(c):
+def codon_aa(c):
     if   c == 'GTT' or c == 'GTC' or c == 'GTA' or c == 'GTG' or c == 'GUU' or (
                    c == 'GUC' or c == 'GUA' or c == 'GUG'):
         c = 'V' # Val
@@ -123,25 +137,18 @@ def Codon_aa(c):
     return c
 
 # Print the strand's converted aa with sequence shift
-def Seq_aa(s):
-    Seq_count = len(s)
-    Codon_count = (Seq_count - Seq_shift) // 3 
+def seq_aa(sequence, seq_shift):
+    seq_count = len(sequence)
+    codon_count = (seq_count - seq_shift) // 3 
     aa = ''
-    loc1 = 0 + Seq_shift
-    loc2 = 3 + Seq_shift
-    for i in range(Codon_count):
-        codon = s[loc1:loc2]
-        aa += Codon_aa(codon)
+    loc1 = 0 + seq_shift
+    loc2 = 3 + seq_shift
+    for i in range(codon_count):
+        codon = sequence[loc1:loc2]
+        aa += codon_aa(codon)
         loc1 += 3
         loc2 += 3
     return aa
 
-# test all codon to aa from string
-Seq_shift = 0
-codon = 'TTTTTCTTATTGCTTCTCCTACTGATTATCATAATGGTTGTCGTAGTGTCTTCCTCATCGAGTA' + (
-        'GCCCTCCCCCACCGACTACCACAACGGCTGCCGCAGCGTATTACTAATAGTGACATCACCAACA' +
-        'GAATAACAAAAAGGATGACGAAGAGTGTTGCTGGCGTCGCCGACGGAGAAGGGGTGGCGGAGGG')
-codon_aa = Seq_aa(codon)
-print(codon_aa)
-# correct output comparison
-print('FFLLLLLLIIIMVVVVSSSSSSPPPPTTTTAAAAYY(*)HHQQNNKKDDEECCWRRRRRRGGGG')
+if __name__ == '__main__':
+    main()
